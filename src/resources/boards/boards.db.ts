@@ -1,3 +1,3 @@
 const boards = []
 
-module.exports = boards
+export default boards
