@@ -7,6 +7,7 @@
     "node": true
   },
   "parserOptions": {
+    "project": "./tsconfig.json",
     "sourceType": "module",
     "ecmaVersion": 2021,
     "ecmaFeatures": {
@@ -20,13 +21,35 @@
     "eslint:recommended",
     "plugin:node/recommended",
     "airbnb-base",
+    "airbnb-typescript/base",
     "prettier"
   ],
   "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
     "import/extensions": "off",
     "linebreak-style": "off",
     "node/no-unsupported-features/es-syntax": "off",
     "no-underscore-dangle": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "node/no-missing-import": ["error", {
+      "allowModules": [],
+      "resolvePaths": ["/path/to/a/modules/directory"],
+      "tryExtensions": [".ts", ".js", ".d.ts"]
+  }],
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "default",
+      "format": [
+        "camelCase",
+        "strictCamelCase",
+        "PascalCase",
+        "StrictPascalCase",
+        "snake_case",
+        "UPPER_CASE"
+      ],
+      "leadingUnderscore": "allow"
+    }
+  ]
   }
 }
