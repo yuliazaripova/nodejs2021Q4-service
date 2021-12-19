@@ -1,21 +1,30 @@
-const { v4: uuidv4 } = require('uuid');
-const { omitPassword } = require('../../common/utils');
-const users = require('./users.db');
-const tasks = require('../tasks/tasks.db');
+import { v4 as uuidv4 } from 'uuid';
+import { omitPassword } from '../../common/utils';
+import users from './users.db';
+import tasks from '../tasks/tasks.db';
+import { IUser, IUserResponse } from '../../models/UserDTO';
 
-function getAll() {
+export function getAll(): Promise<IUserResponse[] | undefined> {
   return new Promise((resolve) => {
     const _users = users.map(i => omitPassword(i));
-    resolve(_users);
+    if (_users) {
+      resolve(_users);
+    }
+    
   });
 }
 
-const findById = (id) => {
-  const user = users.find((_user) => _user.id === id);
-  return omitPassword(user);
-}
+export const findById = (id: string): Promise<IUserResponse | undefined> => 
+  // const user = users.find((_user) => _user.id === id);
+  // return omitPassword(user);
+   new Promise((resolve) => {
+    const user = users.find((_user) => _user.id === id);
+    const _user = user && omitPassword(user)
+    resolve(_user);
+  })
 
-function createUser(user) {
+
+export function createUser(user: IUser): Promise<IUserResponse> {
   return new Promise((resolve) => {
     const newUser = { ...user, id: uuidv4() };
     users.push(newUser);
@@ -23,7 +32,7 @@ function createUser(user) {
   });
 }
 
-function updateUser(id, user) {
+export function updateUser(id: string, user: IUser): Promise<IUserResponse> {
   return new Promise((resolve) => {
     const index = users.findIndex((_user) => _user.id === id);
     users[index] = { ...user, id };
@@ -32,7 +41,7 @@ function updateUser(id, user) {
   });
 }
 
-function deleteUser(id) {
+export function deleteUser(id: string): Promise<void> {
   return new Promise((resolve) => {
     const index = users.findIndex((i) => i.id === id);
   
@@ -48,4 +57,3 @@ function deleteUser(id) {
   });
 }
 
-module.exports = { getAll, findById, createUser, updateUser, deleteUser };

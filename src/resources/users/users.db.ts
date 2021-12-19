@@ -1,3 +1,5 @@
-const users = []
+import { IUser } from "../../models/UserDTO"
 
-export default  users
+const users: IUser[] = []
+
+export default users
