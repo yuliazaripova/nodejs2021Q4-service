@@ -3,19 +3,19 @@ import { TRequestGetBoard, TRequestPostBoard, TRequestPutBoard, TRequestDeleteBo
 import * as Board from './boards.service';
 
 /**
- * Create handler to returns all boards
- * @param request FastifyRequest
+ * Create handler to return all boards
+ * @param _request FastifyRequest
  * @param reply FastifyReply
  * @returns Promise<void>
  */
-export const getBoardsHandler = async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
+export const getBoardsHandler = async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
     const boards = await Board.getAll();
     reply.send(boards);
 }
 
 /**
  * Create handler to find the board by id
- * @param request FastifyRequest
+ * @param request TRequestGetBoard
  * @param reply FastifyReply
  * @returns Promise<void>
  */
@@ -30,7 +30,7 @@ export const getBoardHandler = async (request: TRequestGetBoard, reply: FastifyR
 
 /**
  * Create handler to create new board
- * @param request FastifyRequest
+ * @param request TRequestPostBoard
  * @param reply FastifyReply
  * @returns Promise<void>
  */
@@ -42,7 +42,7 @@ export const  postBoardHandler = async (request: TRequestPostBoard, reply: Fasti
 
 /**
  * Create handler to update the board by id
- * @param request FastifyRequest
+ * @param request TRequestPutBoard
  * @param reply FastifyReply
  * @returns Promise<void>
  */
@@ -57,7 +57,7 @@ export const putBoardHandler =  async (request: TRequestPutBoard, reply: Fastify
 
 /**
  * Create handler to delete the board by id
- * @param request FastifyRequest
+ * @param request TRequestDeleteBoard
  * @param reply FastifyReply
  * @returns Promise<void>
  */

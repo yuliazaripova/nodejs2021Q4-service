@@ -4,8 +4,9 @@ import tasks from './tasks.db';
 
 
 /**
- * Returns all tasks array
- * @returns Promise with all tasks array
+ * Returns all tasks array for specific board
+ * @param boardId string with board id
+ * @returns Promise with all tasks array for specific board
  */
 export function getAll(boardId: string):Promise<ITask[]> {
   return new Promise((resolve) => {
@@ -16,7 +17,7 @@ export function getAll(boardId: string):Promise<ITask[]> {
 
 /**
  * Find the task by id
- * @param id string with task id
+ * @param taskId string with task id
  * @returns Promise<undefind> if task was not found or Promise with found task
  */
 export function findById(taskId: string): Promise<ITask | undefined> {
@@ -28,7 +29,7 @@ export function findById(taskId: string): Promise<ITask | undefined> {
 
 /**
  * Create new task for specific board
- * @param id string with board id for which will be task created
+ * @param boardId string with board id for which will be task created
  * @param task ITask object with task data
  * @returns Promise with created task
  */

@@ -1,7 +1,7 @@
 export interface IBoard {
     id: string
      title: string
-     columns: IColumn
+     columns: IColumn[]
 }
 
 interface IColumn {

@@ -43,7 +43,7 @@ export function createUser(user: IUser): Promise<IUserResponse> {
 /**
  * Update the user by id
  * @param id string with user id
- * @param user IUser object with board data
+ * @param user IUser object with user data
  * @returns Promise with updated user without password
  */
 export function updateUser(id: string, user: IUser): Promise<IUserResponse> {

@@ -55,7 +55,7 @@ export function updateBoard(id: string, board: IBoard): Promise<IBoard> {
 }
 
 /**
- * Delete the board by id
+ * Delete the board by id and all tasks from this board
  * @param id string with board id
  * @returns Promise<void>
  */
