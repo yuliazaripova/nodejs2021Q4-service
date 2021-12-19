@@ -2,20 +2,36 @@ import { v4 as uuidv4 } from 'uuid';
 import { ITask } from '../../models/TaskDTO';
 import tasks from './tasks.db';
 
-export function getAll(boardId: string) {
+
+/**
+ * Returns all tasks array
+ * @returns Promise with all tasks array
+ */
+export function getAll(boardId: string):Promise<ITask[]> {
   return new Promise((resolve) => {
     const board = tasks.filter(i => i.boardId === boardId);
     resolve(board);
   });
 }
 
-export function findById(boardId: string, taskId: string): Promise<ITask | undefined> {
+/**
+ * Find the task by id
+ * @param id string with task id
+ * @returns Promise<undefind> if task was not found or Promise with found task
+ */
+export function findById(taskId: string): Promise<ITask | undefined> {
     return new Promise((resolve) => {
       const task = tasks.find(i => i.id === taskId);
       resolve(task);
     });
 }
 
+/**
+ * Create new task for specific board
+ * @param id string with board id for which will be task created
+ * @param task ITask object with task data
+ * @returns Promise with created task
+ */
 export function createTask(boardId: string, task: ITask): Promise<ITask> {
   return new Promise((resolve) => {
     const newTask = { ...task, id: uuidv4(), boardId };
@@ -24,6 +40,12 @@ export function createTask(boardId: string, task: ITask): Promise<ITask> {
   });
 }
 
+/**
+ * Update the task by id
+ * @param id string with task id
+ * @param task ITask object with task data
+ * @returns Promise with updated task
+ */
 export function updateTask(id: string, task: ITask): Promise<ITask> {
   return new Promise((resolve) => {
     const index = tasks.findIndex((_task) => _task.id === id);
@@ -32,6 +54,11 @@ export function updateTask(id: string, task: ITask): Promise<ITask> {
   });
 }
 
+/**
+ * Delete the task by id
+ * @param id string with task id
+ * @returns Promise<void>
+ */
 export function deleteTask(id: string): Promise<void> {
   return new Promise((resolve) => {
     const index = tasks.findIndex((i) => i.id === id);

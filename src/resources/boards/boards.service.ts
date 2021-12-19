@@ -57,7 +57,7 @@ export function updateBoard(id: string, board: IBoard): Promise<IBoard> {
 /**
  * Delete the board by id
  * @param id string with board id
- * @returns Promise<void
+ * @returns Promise<void>
  */
 export function deleteBoard(id: string): Promise<void> {
   return new Promise((resolve) => {
