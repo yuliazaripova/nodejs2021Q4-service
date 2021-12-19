@@ -8,7 +8,7 @@ import tasks from './tasks.db';
  * @param boardId string with board id
  * @returns Promise with all tasks array for specific board
  */
-export function getAll(boardId: string):Promise<ITask[]> {
+export function getAll(boardId: string): Promise<ITask[]> {
   return new Promise((resolve) => {
     const board = tasks.filter(i => i.boardId === boardId);
     resolve(board);
@@ -42,7 +42,7 @@ export function createTask(boardId: string, task: ITask): Promise<ITask> {
 }
 
 /**
- * Update the task by id
+ * Update the task by id for specific board
  * @param id string with task id
  * @param task ITask object with task data
  * @returns Promise with updated task

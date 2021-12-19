@@ -56,7 +56,7 @@ export function updateUser(id: string, user: IUser): Promise<IUserResponse> {
 }
 
 /**
- * Delete the user by id and all user's tasks
+ * Delete the user by id and change his tasks user field to null
  * @param id string with user id
  * @returns Promise<void>
  */
