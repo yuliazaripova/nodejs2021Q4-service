@@ -8,11 +8,15 @@ const fastify = Fastify({
   logger: true
 })
 
-
 fastify.register(userRoutes)
 fastify.register(boardsRoutes)
 fastify.register(tasksRoutes)
 
+
+/**
+ * Start fastify app
+ * @returns Promise<void>
+ */
 const start = async () => {
   try {
     await fastify.listen(CONFIG.PORT as string)
