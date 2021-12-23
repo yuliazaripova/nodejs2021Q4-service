@@ -4,8 +4,10 @@ import boardsRoutes from './resources/boards/boards.routes';
 import userRoutes from './resources/users/user.routes';
 import tasksRoutes from './resources/tasks/tasks.routes';
 import initLogger from './logger/logger';
+import { ELoggerTypes } from './logger/types';
 
-const logger = initLogger(CONFIG.LOGGER_LEVEL)
+const logger = initLogger(CONFIG.LOGGER_LEVEL as ELoggerTypes)
+
 const fastify = require('fastify')({
   logger
 })

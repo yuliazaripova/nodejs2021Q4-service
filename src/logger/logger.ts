@@ -1,12 +1,9 @@
 import { FastifyRequest } from "fastify"
 import pino from "pino"
+import { ELoggerTypes } from "./types"
 
-const initLogger = (level = "info") => pino({
+const initLogger = (level = ELoggerTypes.INFO) => pino({
     level,
-    // customLevels: {
-    //     foo: 35
-    //   },
-    // useOnlyCustomLevels: true,
     serializers: {
       req (request: FastifyRequest) {
         return { 
@@ -20,7 +17,7 @@ const initLogger = (level = "info") => pino({
     transport: {
       targets: [{
         level: 'info',
-        target: 'pino-pretty', // must be installed separately
+        target: 'pino-pretty',
         options: {
                  colorize: true
               }
