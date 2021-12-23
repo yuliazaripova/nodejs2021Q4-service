@@ -1,0 +1,2 @@
+{"level":50,"time":1640262507426,"pid":67257,"hostname":"EPRUIZHW00BE","err":{"type":"Error","message":"","stack":"Error\n    at start (/Users/iuliia_zaripova/nodejs2021Q4-service-1/src/server.ts:132:11)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"},"msg":""}
+{"level":50,"time":1640263330620,"pid":67672,"hostname":"EPRUIZHW00BE","err":{"type":"Error","message":"","stack":"Error\n    at start (/Users/iuliia_zaripova/nodejs2021Q4-service-1/src/server.ts:134:11)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"},"msg":""}
