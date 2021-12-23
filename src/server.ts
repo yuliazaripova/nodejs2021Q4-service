@@ -5,52 +5,6 @@ import userRoutes from './resources/users/user.routes';
 import tasksRoutes from './resources/tasks/tasks.routes';
 import initLogger from './logger/logger';
 
-
-// const a = pino({
-//   level: "info",  
-//   transport: {
-//     target: 'pino-pretty',
-//     options: {
-//       colorize: true
-//     }
-//   }
-// }, pino.multistream(streams, opts))
-
-
-// const log = pino({
-//   level: "info",
-//   serializers: {
-//     req (request) {
-//       return { 
-//         method: request.method,
-//         url: request.url,
-//         params: request.params,
-//         hostname: request.hostname,
-//         remoteAddress: request.remoteAddress 
-//       }
-//     }
-//  },
-//   transport: {
-//     targets: [{
-//       level: 'info',
-//       target: 'pino-pretty', // must be installed separately
-//       options: {
-//                colorize: true
-//             }
-//     }, {
-//       level: 'info',
-//       target: 'pino/file',
-//       options: { destination: `${__dirname}/logs/info.log` }
-//     },
-//     {
-//       level: 'error',
-//       target: 'pino/file',
-//       options: { destination: `${__dirname}/logs/error.log` }
-//     }
-//   ]
-//   }
-// })
-
 const logger = initLogger(CONFIG.LOGGER_LEVEL)
 const fastify = require('fastify')({
   logger
@@ -58,7 +12,7 @@ const fastify = require('fastify')({
 
 fastify.addHook('preHandler', (req: FastifyRequest, _reply: FastifyReply, done: () => void) => {
   if (req.body) {
-    req.log.info({ body: req.body}, 'parsed body')
+    req.log.info({ body: req.body }, 'parsed body')
   }
   done()
 })

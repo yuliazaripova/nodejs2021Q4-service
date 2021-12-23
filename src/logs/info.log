@@ -166,3 +166,5 @@
 {"level":30,"time":1640268206281,"pid":71595,"hostname":"EPRUIZHW00BE","reqId":"req-1u","res":{"statusCode":204},"responseTime":0.08774995803833008,"msg":"request completed"}
 {"level":30,"time":1640268206282,"pid":71595,"hostname":"EPRUIZHW00BE","reqId":"req-1v","req":{"method":"DELETE","url":"/boards/2755739d-89a9-4c75-bf23-24593dfd3aab","params":{"board":"2755739d-89a9-4c75-bf23-24593dfd3aab"},"hostname":"localhost:4000"},"msg":"incoming request"}
 {"level":30,"time":1640268206283,"pid":71595,"hostname":"EPRUIZHW00BE","reqId":"req-1v","res":{"statusCode":204},"responseTime":0.11214709281921387,"msg":"request completed"}
+{"level":30,"time":1640268246415,"pid":71787,"hostname":"EPRUIZHW00BE","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1640268251102,"pid":71804,"hostname":"EPRUIZHW00BE","msg":"Server listening at http://127.0.0.1:4000"}
