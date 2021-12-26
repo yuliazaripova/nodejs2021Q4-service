@@ -16,7 +16,7 @@ const initLogger = (level = ELoggerTypes.INFO) => pino({
    },
     transport: {
       targets: [{
-        level: 'info',
+        level: 'trace',
         target: 'pino-pretty',
         options: {
                  colorize: true
