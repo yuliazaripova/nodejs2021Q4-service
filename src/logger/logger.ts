@@ -22,14 +22,14 @@ const initLogger = (level = ELoggerTypes.INFO) => pino({
                  colorize: true
               }
       }, {
-        level: 'info',
+        level: 'trace',
         target: 'pino/file',
-        options: { destination: `${__dirname}/../logs/info.log` }
+        options: { destination: `${__dirname}/../../logs/all.log`, mkdir: true }
       },
       {
         level: 'error',
         target: 'pino/file',
-        options: { destination: `${__dirname}/../logs/error.log` }
+        options: { destination: `${__dirname}/../../logs/error.log`, mkdir: true }
       }
     ]
     }

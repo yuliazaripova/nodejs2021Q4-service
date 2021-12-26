@@ -5,5 +5,5 @@ export enum ELoggerTypes {
     INFO = 'info',
     DEBUG = 'debug', 
     TRACE = 'trace',
-    SILENT = 'silent'
+    SILENT = 'silent' // disable logging
 }

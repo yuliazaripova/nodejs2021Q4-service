@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import CONFIG from './common/config';
 import boardsRoutes from './resources/boards/boards.routes';
 import userRoutes from './resources/users/user.routes';
@@ -18,6 +18,21 @@ fastify.addHook('preHandler', (req: FastifyRequest, _reply: FastifyReply, done: 
   }
   done()
 })
+fastify.setErrorHandler( async (error: FastifyError, _request: FastifyRequest, reply: FastifyReply) => {
+  logger.error(error)
+  reply.status(error.statusCode || 500).send({ ok: false })
+});
+
+process.on('uncaughtException', (err, origin) => {
+  logger.error(`Caught exception: ${err}\n` +
+  `Exception origin: ${origin}`)
+   process.exit(1)
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1)
+});
 
 fastify.register(userRoutes)
 fastify.register(boardsRoutes)
@@ -30,9 +45,8 @@ fastify.register(tasksRoutes)
 const start = async () => {
   try {
     await fastify.listen(CONFIG.PORT as string)
-  
   } catch (err) {
-  //  log.error(err)
+    logger.error(err)
     process.exit(1)
   }
 }
