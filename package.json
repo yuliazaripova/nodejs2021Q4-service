@@ -44,13 +44,15 @@
     ]
   },
   "dependencies": {
+    "@types/connect": "^3.4.35",
     "cross-env": "7.0.3",
     "dotenv": "10.0.0",
     "esm": "^3.2.25",
-    "express": "4.17.1",
+
     "fastify": "^3.25.0",
     "http-errors": "^1.8.1",
-    "swagger-ui-express": "4.1.6",
+    "pino": "^7.6.0",
+    "pino-pretty": "^7.3.0",
     "ts-node": "^10.4.0",
     "uuid": "8.3.2",
     "yamljs": "0.3.0"
