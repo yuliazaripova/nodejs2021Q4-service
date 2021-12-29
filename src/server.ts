@@ -1,10 +1,12 @@
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
+import fastifySwagger from 'fastify-swagger';
 import CONFIG from './common/config';
 import boardsRoutes from './resources/boards/boards.routes';
 import userRoutes from './resources/users/user.routes';
 import tasksRoutes from './resources/tasks/tasks.routes';
 import initLogger from './logger/logger';
 import { ELoggerTypes } from './logger/types';
+import swagger from './common/swagger';
 
 const logger = initLogger(CONFIG.LOGGER_LEVEL as ELoggerTypes)
 
@@ -37,6 +39,8 @@ process.on('unhandledRejection', (reason, promise) => {
 fastify.register(userRoutes)
 fastify.register(boardsRoutes)
 fastify.register(tasksRoutes)
+
+fastify.register(fastifySwagger, swagger)
 
 /**
  * Start fastify app

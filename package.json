@@ -48,8 +48,8 @@
     "cross-env": "7.0.3",
     "dotenv": "10.0.0",
     "esm": "^3.2.25",
-
     "fastify": "^3.25.0",
+    "fastify-swagger": "^4.13.0",
     "http-errors": "^1.8.1",
     "pino": "^7.6.0",
     "pino-pretty": "^7.3.0",
