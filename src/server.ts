@@ -48,7 +48,7 @@ fastify.register(fastifySwagger, swagger)
  */
 const start = async () => {
   try {
-    await fastify.listen(CONFIG.PORT as string)
+    await fastify.listen(CONFIG.PORT as string, '0.0.0.0')
   } catch (err) {
     logger.error(err)
     process.exit(1)
