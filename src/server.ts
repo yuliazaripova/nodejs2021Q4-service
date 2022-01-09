@@ -1,10 +1,12 @@
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
+import fastifySwagger from 'fastify-swagger';
 import CONFIG from './common/config';
 import boardsRoutes from './resources/boards/boards.routes';
 import userRoutes from './resources/users/user.routes';
 import tasksRoutes from './resources/tasks/tasks.routes';
 import initLogger from './logger/logger';
 import { ELoggerTypes } from './logger/types';
+import swagger from './common/swagger';
 
 const logger = initLogger(CONFIG.LOGGER_LEVEL as ELoggerTypes)
 
@@ -38,13 +40,15 @@ fastify.register(userRoutes)
 fastify.register(boardsRoutes)
 fastify.register(tasksRoutes)
 
+fastify.register(fastifySwagger, swagger)
+
 /**
  * Start fastify app
  * @returns Promise<void>
  */
 const start = async () => {
   try {
-    await fastify.listen(CONFIG.PORT as string)
+    await fastify.listen(CONFIG.PORT as string, '0.0.0.0')
   } catch (err) {
     logger.error(err)
     process.exit(1)

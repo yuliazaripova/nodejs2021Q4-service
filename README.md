@@ -70,3 +70,12 @@ npm run lint
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+## Running docker
+
+1. Install [Docker](https://docs.docker.com/engine/install/)
+2. Create `Docker Hub` account [Docker Hub](https://hub.docker.com/)
+3. 
+```
+npm run docker:start
+```
