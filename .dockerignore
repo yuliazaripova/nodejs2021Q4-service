@@ -3,3 +3,6 @@ test
 /logs/*.log
 .idea
 .vscode
+postrgres-data
+.github
+doc
