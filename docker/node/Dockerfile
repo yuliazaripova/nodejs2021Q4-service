@@ -9,6 +9,6 @@ RUN npm install -g nodemon
 
 COPY . .
 
-EXPOSE 4000
+EXPOSE ${PORT}
 
-CMD [ "nodemon", "src/server.ts" ]
+CMD [ "nodemon", "-L", "src/server.ts" ]

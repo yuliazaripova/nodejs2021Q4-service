@@ -1,8 +1,28 @@
 version: '3.0'
 
 services:
-  my-api:
-    image: my-http
-    build: .
+  db:
+    image: postgres
+    restart: always
+    build: 
+      context: .
+      dockerfile: docker/db/Dockerfile
     ports:
-      - "4000:4000"
+      - "${PGPORT}:${PGPORT}"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  node:
+    image: node
+    volumes:
+      - ./:/usr/src/app
+      - ./logs:/usr/app/logs
+    depends_on:
+      - db
+    restart: always
+    build: 
+      context: .
+      dockerfile: docker/node/Dockerfile
+    ports:
+      - "${PORT}:${PORT}"
