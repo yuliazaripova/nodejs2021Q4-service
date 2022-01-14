@@ -2,10 +2,13 @@
     "extends": "@tsconfig/node16/tsconfig.json",
     "esModuleInterop": true,
     "compilerOptions": {
+        "experimentalDecorators": true,
         "noImplicitAny": true,
         "strict": true,
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "exclude": ["node_modules", "**/*.spec.ts"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   }
   

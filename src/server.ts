@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import fastifySwagger from 'fastify-swagger';
 import CONFIG from './common/config';
@@ -7,6 +8,7 @@ import tasksRoutes from './resources/tasks/tasks.routes';
 import initLogger from './logger/logger';
 import { ELoggerTypes } from './logger/types';
 import swagger from './common/swagger';
+import ORM_CONFIG from '../ormconfig'
 
 const logger = initLogger(CONFIG.LOGGER_LEVEL as ELoggerTypes)
 
@@ -14,6 +16,22 @@ const fastify = require('fastify')({
   logger
 })
 
+fastify.register(require('fastify-typeorm-plugin'), ORM_CONFIG);
+// {
+//   type: 'postgres',
+//   database: CONFIG.POSTGRES_DB,
+//   host: 'db', 
+//   port: CONFIG.PGPORT,
+//   username: CONFIG.POSTGRES_USER,
+//   password: CONFIG.POSTGRES_PASSWORD,
+//   entities: [User],
+//   migrations: ["migration/*.js"],
+//   cli: {
+//     entitiesDir: "src/entity",
+//     migrationsDir: "src/migrations",
+//   },
+//   synchronize: true,
+// }
 fastify.addHook('preHandler', (req: FastifyRequest, _reply: FastifyReply, done: () => void) => {
   if (req.body) {
     req.log.info({ body: req.body }, 'parsed body')
