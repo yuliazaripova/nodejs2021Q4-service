@@ -24,7 +24,7 @@ fastify.register(require('fastify-typeorm-plugin'), ORM_CONFIG);
 //   port: CONFIG.PGPORT,
 //   username: CONFIG.POSTGRES_USER,
 //   password: CONFIG.POSTGRES_PASSWORD,
-//   entities: [User],
+//   entities: [User, Board],
 //   migrations: ["migration/*.js"],
 //   cli: {
 //     entitiesDir: "src/entity",
