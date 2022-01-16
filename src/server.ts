@@ -8,7 +8,9 @@ import tasksRoutes from './resources/tasks/tasks.routes';
 import initLogger from './logger/logger';
 import { ELoggerTypes } from './logger/types';
 import swagger from './common/swagger';
-import ORM_CONFIG from '../ormconfig'
+import { Task } from "./entity/Task";
+import { Board } from "./entity/Board";
+import { User } from "./entity/User";
 
 const logger = initLogger(CONFIG.LOGGER_LEVEL as ELoggerTypes)
 
@@ -16,22 +18,22 @@ const fastify = require('fastify')({
   logger
 })
 
-fastify.register(require('fastify-typeorm-plugin'), ORM_CONFIG);
-// {
-//   type: 'postgres',
-//   database: CONFIG.POSTGRES_DB,
-//   host: 'db', 
-//   port: CONFIG.PGPORT,
-//   username: CONFIG.POSTGRES_USER,
-//   password: CONFIG.POSTGRES_PASSWORD,
-//   entities: [User, Board],
-//   migrations: ["migration/*.js"],
-//   cli: {
-//     entitiesDir: "src/entity",
-//     migrationsDir: "src/migrations",
-//   },
-//   synchronize: true,
-// }
+fastify.register(require('fastify-typeorm-plugin'), {
+  type: 'postgres',
+  database: CONFIG.POSTGRES_DB,
+  host: 'db', 
+  port: CONFIG.PGPORT,
+  username: CONFIG.POSTGRES_USER,
+  password: CONFIG.POSTGRES_PASSWORD,
+  entities: [User, Board, Task],
+  migrations: ["migration/*.js"],
+  cli: {
+    entitiesDir: "src/entity",
+    migrationsDir: "src/migrations",
+  },
+  synchronize: true,
+});
+
 fastify.addHook('preHandler', (req: FastifyRequest, _reply: FastifyReply, done: () => void) => {
   if (req.body) {
     req.log.info({ body: req.body }, 'parsed body')

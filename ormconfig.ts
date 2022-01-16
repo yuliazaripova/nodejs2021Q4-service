@@ -1,6 +1,4 @@
 import CONFIG from './src/common/config';
-import { User } from './src/entity/User';
-import { Board } from './src/entity/Board'
 
 const ORM_CONFIG = { 
    type: 'postgres',
@@ -9,13 +7,22 @@ const ORM_CONFIG = {
    port: CONFIG.PGPORT,
    username: CONFIG.POSTGRES_USER,
    password: CONFIG.POSTGRES_PASSWORD,
-   entities: [User, Board],
-      "migrations": [
-         "src/migration/**/*.ts"
-      ],
-      "subscribers": [
-         "src/subscriber/**/*.ts"
-      ]
+   synchronize: false,
+   migrationsRun: true,
+   "entities": [
+      "src/entity/**/*.ts"
+   ],
+   "migrations": [
+      "src/migrations/**/*.ts"
+   ],
+   "subscribers": [
+      "src/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migrations",
+      "subscribersDir": "src/subscriber"
+   }
  }
 
  export default ORM_CONFIG

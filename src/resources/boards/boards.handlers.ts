@@ -24,7 +24,12 @@ export const getBoardsHandler = async (_request: FastifyRequest, reply: FastifyR
 export const getBoardHandler = async (request: TRequestGetBoard, reply: FastifyReply): Promise<void> => {
     const boardRepository = getRepository(Board);
     const board = await boardRepository.find({ id: request.params.board });
-    reply.send(board[0]); 
+    if (board[0]) {
+      reply.send(board[0]); 
+    } else {
+      reply.code(404)
+      reply.send()
+    }
 }
 
 /**
@@ -35,7 +40,7 @@ export const getBoardHandler = async (request: TRequestGetBoard, reply: FastifyR
  */
 export const  postBoardHandler = async (request: TRequestPostBoard, reply: FastifyReply): Promise<void> => {
   const boardRepository = getRepository(Board);
-  //  reply.code(201)
+    reply.code(201)
     const board = await boardRepository.save(request.body);
     reply.send(board); 
 }
@@ -61,8 +66,13 @@ export const putBoardHandler =  async (request: TRequestPutBoard, reply: Fastify
  */
 export const deleteBoardHandler = async (request: TRequestDeleteBoard, reply: FastifyReply): Promise<void> => {
   const boardRepository = getRepository(Board);
-  reply.code(204)
+  
   const board = await boardRepository.find({ id: request.params.board });
-  await boardRepository.remove(board)
-  reply.send(`User id ${request.params.board} has been deleted.`)
+  if (board[0]) {
+    await boardRepository.remove(board)
+    reply.code(204)
+    reply.send()
+  } else {
+    reply.code(404)
+  }
 }

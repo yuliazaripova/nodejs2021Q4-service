@@ -11,4 +11,4 @@ COPY . .
 
 EXPOSE ${PORT}
 
-CMD [ "nodemon", "-L", "src/server.ts" ]
+CMD [ "npm", "run", "start" ]

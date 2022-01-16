@@ -1,9 +1,9 @@
 export interface ITask {
     id: string
     title: string
-    order: string
+    order: number
     description: string
-    userId: string | null
+    userId: string
     boardId: string
     columnId: string
 }
