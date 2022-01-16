@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { getRepository } from 'typeorm';
 import { TRequestGetBoard, TRequestPostBoard, TRequestPutBoard, TRequestDeleteBoard } from '../../models/BoardRoutesDTO';
 import { Board } from '../../entity/Board';
+import { Task } from '../../entity/Task';
 
 /**
  * Create handler to return all boards
@@ -66,10 +67,15 @@ export const putBoardHandler =  async (request: TRequestPutBoard, reply: Fastify
  */
 export const deleteBoardHandler = async (request: TRequestDeleteBoard, reply: FastifyReply): Promise<void> => {
   const boardRepository = getRepository(Board);
+  const taskRepository = getRepository(Task)
+
+  
   
   const board = await boardRepository.find({ id: request.params.board });
   if (board[0]) {
     await boardRepository.remove(board)
+    const tasks = await taskRepository.find({boardId: request.params.board})
+    await taskRepository.remove(tasks)
     reply.code(204)
     reply.send()
   } else {
