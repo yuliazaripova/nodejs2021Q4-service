@@ -1,6 +1,7 @@
 import { FastifyReply } from 'fastify';
+import { getRepository } from 'typeorm';
 import { TRequestGetTasks, TRequestPostTask, TRequestGetTask, TRequestPutTask, TRequestDeleteTask } from '../../models/TaskRoutesDTO';
-import * as Task from './tasks.service';
+import { Task } from '../../entity/Task'
 
 /**
  * Create handler to return all tasks for specific board
@@ -9,7 +10,8 @@ import * as Task from './tasks.service';
  * @returns Promise<void>
  */
 export const getTasksHandler =  async (request: TRequestGetTasks, reply: FastifyReply): Promise<void> => {
-    const tasks = await Task.getAll(request.params.board);
+    const taskRepository = getRepository(Task);
+    const tasks = await taskRepository.find();
     reply.send(tasks)
 }
 
@@ -20,12 +22,14 @@ export const getTasksHandler =  async (request: TRequestGetTasks, reply: Fastify
  * @returns Promise<void>
  */
 export const getTaskHandler =  async (request: TRequestGetTask, reply: FastifyReply): Promise<void> => {
-    const task = await Task.findById(request.params.task);
-    if (!task) {
-        reply.callNotFound()
-    } else {
-        reply.send(task); 
-    }
+    const taskRepository = getRepository(Task);
+    const task = await taskRepository.find({ id: request.params.task });
+    if (task[0]) {
+        reply.send(task[0]); 
+      } else {
+        reply.code(404)
+        reply.send()
+      }
     
 }
 
@@ -36,8 +40,9 @@ export const getTaskHandler =  async (request: TRequestGetTask, reply: FastifyRe
  * @returns Promise<void>
  */
 export const postTaskHandler = async (request: TRequestPostTask, reply: FastifyReply): Promise<void> => {
+    const taskRepository = getRepository(Task);
     reply.code(201)
-    const task = await Task.createTask(request.params.board, request.body);
+    const task = await taskRepository.save({...request.body, boardId: request.params.board});
     reply.send(task); 
 }
 
@@ -48,13 +53,10 @@ export const postTaskHandler = async (request: TRequestPostTask, reply: FastifyR
  * @returns Promise<void>
  */
 export const putTaskHandler =  async (request: TRequestPutTask, reply: FastifyReply): Promise<void> => {
-    const task = await Task.updateTask(request.params.task, request.body);
-    
-    if (!task) {
-        reply.callNotFound()
-      } else {
-        reply.send(task);
-      }
+    const taskRepository = getRepository(Task);
+  //  if (task === undefined) return undefined
+    const task = await taskRepository.update(request.params.task, request.body);
+    reply.send(task); 
      
 }
 
@@ -65,7 +67,14 @@ export const putTaskHandler =  async (request: TRequestPutTask, reply: FastifyRe
  * @returns Promise<void>
  */ 
 export const deleteTaskHandler =  async (request: TRequestDeleteTask, reply: FastifyReply): Promise<void> => {
-    reply.code(204)
-    const task = await Task.deleteTask(request.params.task);
-    reply.send(task)
+    const taskRepository = getRepository(Task);
+    const task = await taskRepository.find({ id: request.params.task });
+   
+    if (task[0]) {
+        await taskRepository.remove(task)
+        reply.code(204)
+        reply.send()
+      } else {
+        reply.code(404)
+      }
 }

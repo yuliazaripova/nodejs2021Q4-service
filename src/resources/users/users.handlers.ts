@@ -1,7 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { getRepository } from 'typeorm';
+import { User } from '../../entity/User'
 import { TRequestDeleteUser, TRequestGetUser, TRequestPostUser, TRequestPutUser } from '../../models/UserRoutes';
-
-import * as User from './user.service';
+import { omitPassword } from '../../common/utils';
 
 /**
  * Create handler to return all users
@@ -10,7 +11,8 @@ import * as User from './user.service';
  * @returns Promise<void>
  */
 export const getUsersHandler = async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
-    const users = await User.getAll();
+    const userRepository = getRepository(User);
+    const users = await userRepository.find();
     reply.send(users)
 }
 
@@ -21,8 +23,16 @@ export const getUsersHandler = async (_request: FastifyRequest, reply: FastifyRe
  * @returns Promise<void>
  */
 export const getUserHandler =  async (request: TRequestGetUser, reply: FastifyReply): Promise<void> => {
-    const user = await User.findById(request.params.user);
-    reply.send(user); 
+    const userRepository = getRepository(User);
+    const user = await userRepository.find({ id: request.params.user });
+    if (user[0]) {     
+        const _user = user && omitPassword(user[0])
+        reply.send(_user);
+    } else {
+        reply.send()
+    }
+    
+   
 }
 
 /**
@@ -32,9 +42,14 @@ export const getUserHandler =  async (request: TRequestGetUser, reply: FastifyRe
  * @returns Promise<void>
  */
 export const postUserHandler =  async (request: TRequestPostUser, reply: FastifyReply): Promise<void> => {
+    const userRepository = getRepository(User);
     reply.code(201)
-    const user = await User.createUser(request.body);
-    reply.send(user); 
+    const user = await userRepository.save(request.body);
+    reply.headers({'content-type': 'application/json'})
+ 
+    const _user = user && omitPassword(user)
+       
+    reply.send(_user);
 }
 
 /**
@@ -44,8 +59,14 @@ export const postUserHandler =  async (request: TRequestPostUser, reply: Fastify
  * @returns Promise<void>
  */
 export const putUserHandler = async (request: TRequestPutUser, reply: FastifyReply): Promise<void> => {
-    const user = await User.updateUser(request.params.user, request.body);
-    reply.send(user); 
+    const userRepository = getRepository(User);
+    const user = await userRepository.find({ id: request.params.user });
+    if (user) {
+        await userRepository.update(request.params.user, request.body);
+    }
+    
+    reply.headers({'content-type': 'application/json'})
+    reply.send(); 
 }
 
 /**
@@ -55,7 +76,9 @@ export const putUserHandler = async (request: TRequestPutUser, reply: FastifyRep
  * @returns Promise<void>
  */
 export const deleteUserHandler = async (request: TRequestDeleteUser, reply: FastifyReply): Promise<void> => {
+    const userRepository = getRepository(User);
     reply.code(204)
-    const user = await User.deleteUser(request.params.user);
-    reply.send(user)
+    const user = await userRepository.find({ id: request.params.user });
+    await userRepository.remove(user)
+    reply.send()
 }

@@ -1,6 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { getRepository } from 'typeorm';
 import { TRequestGetBoard, TRequestPostBoard, TRequestPutBoard, TRequestDeleteBoard } from '../../models/BoardRoutesDTO';
-import * as Board from './boards.service';
+import { Board } from '../../entity/Board';
+import { Task } from '../../entity/Task';
 
 /**
  * Create handler to return all boards
@@ -9,8 +11,9 @@ import * as Board from './boards.service';
  * @returns Promise<void>
  */
 export const getBoardsHandler = async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
-    const boards = await Board.getAll();
-    reply.send(boards);
+  const boardsRepository = getRepository(Board);
+  const boards = await boardsRepository.find();
+  reply.send(boards)
 }
 
 /**
@@ -20,12 +23,14 @@ export const getBoardsHandler = async (_request: FastifyRequest, reply: FastifyR
  * @returns Promise<void>
  */
 export const getBoardHandler = async (request: TRequestGetBoard, reply: FastifyReply): Promise<void> => {
-    const board = await Board.findById(request.params.board);
-    if (!board) {
-        reply.callNotFound();
-      } else {
-        reply.send(board);
-      }
+    const boardRepository = getRepository(Board);
+    const board = await boardRepository.find({ id: request.params.board });
+    if (board[0]) {
+      reply.send(board[0]); 
+    } else {
+      reply.code(404)
+      reply.send()
+    }
 }
 
 /**
@@ -35,8 +40,9 @@ export const getBoardHandler = async (request: TRequestGetBoard, reply: FastifyR
  * @returns Promise<void>
  */
 export const  postBoardHandler = async (request: TRequestPostBoard, reply: FastifyReply): Promise<void> => {
+  const boardRepository = getRepository(Board);
     reply.code(201)
-    const board = await Board.createBoard(request.body);
+    const board = await boardRepository.save(request.body);
     reply.send(board); 
 }
 
@@ -47,12 +53,10 @@ export const  postBoardHandler = async (request: TRequestPostBoard, reply: Fasti
  * @returns Promise<void>
  */
 export const putBoardHandler =  async (request: TRequestPutBoard, reply: FastifyReply): Promise<void> => {
-    const board = await Board.updateBoard(request.params.board, request.body);
-    if (!board) {
-        reply.callNotFound();
-      } else {
-        reply.send(board);
-      }
+  const boardRepository = getRepository(Board);
+  const board = await boardRepository.update(request.params.board, request.body);
+  reply.send(board); 
+
 }
 
 /**
@@ -62,7 +66,19 @@ export const putBoardHandler =  async (request: TRequestPutBoard, reply: Fastify
  * @returns Promise<void>
  */
 export const deleteBoardHandler = async (request: TRequestDeleteBoard, reply: FastifyReply): Promise<void> => {
-    reply.code(204);
-    const board = await Board.deleteBoard(request.params.board);
-    reply.send(board);
+  const boardRepository = getRepository(Board);
+  const taskRepository = getRepository(Task)
+
+  
+  
+  const board = await boardRepository.find({ id: request.params.board });
+  if (board[0]) {
+    await boardRepository.remove(board)
+    const tasks = await taskRepository.find({boardId: request.params.board})
+    await taskRepository.remove(tasks)
+    reply.code(204)
+    reply.send()
+  } else {
+    reply.code(404)
+  }
 }

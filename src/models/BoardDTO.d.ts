@@ -6,6 +6,6 @@ interface IColumn {
 
 export interface IBoard {
     id: string
-     title: string
-     columns: IColumn[]
+    title: string
+    columns: string
 }
