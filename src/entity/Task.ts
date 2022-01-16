@@ -10,7 +10,7 @@ export class Task {
   @Column("varchar")
   title!: string;
 
-  @Column({ type: "int", nullable: true })
+  @Column("int")
   order!: number;
 
   @Column("varchar")
